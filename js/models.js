@@ -24,8 +24,7 @@ class Story {
   /** Parses hostname out of URL and returns it. */
 
   getHostName() {
-    // UNIMPLEMENTED: complete this function!
-    return "hostname.com";
+    return new URL(this.url).host;
   }
 }
 
@@ -81,7 +80,8 @@ class StoryList {
     })
 
     let { story } = response.data;
-    
+    this.stories.push(new Story(story));
+
     return new Story (
       {
         storyId: story.storyId,
@@ -209,5 +209,49 @@ class User {
       console.error("loginViaStoredCredentials failed", err);
       return null;
     }
+  }
+
+  isFavorite(story) {
+    return this.favorites.some(s => (s.storyId === story.storyId));
+  }
+
+  async addFavorite(story) {
+    this.favorites.push(story);
+    await this.toggleFavorite("add", story);
+  }
+
+  async removeFavorite(story) {
+    this.favorites = this.favorites.filter(s => s.storyId !== story.storyId);
+
+    await this.toggleFavorite("remove", story);
+  }
+
+  async toggleFavorite(state, story) {
+    const method = state === "add" ? "POST" : "DELETE";
+    const token = this.loginToken;
+    const response = await axios({
+      url: `${BASE_URL}/users/${this.username}/favorites/${story.storyId}`,
+      method: method,
+      data: { token }
+    });
+  }
+
+  isUserStory(story) {
+    return this.ownStories.some(s => (s.storyId === story.storyId));
+  }
+
+  async removeStory(story) {
+    this.ownStories = this.ownStories.filter(s => (s.storyId !== story.storyId));
+    await this.deleteStory(story);
+  }
+
+  async deleteStory(story) {
+    const token = this.loginToken;
+    const response = await axios({
+      url: `${BASE_URL}/stories/${story.storyId}`,
+      method: "DELETE",
+      data: { token }
+    })
+    console.log(response);
   }
 }
