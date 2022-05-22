@@ -20,7 +20,6 @@ async function getAndShowStoriesOnStart() {
  */
 
 function generateStoryMarkup(story) {
-  // console.debug("generateStoryMarkup", story);
 
   const hostName = story.getHostName();
 
@@ -66,7 +65,6 @@ function getTrashcanHTML() {
 /** Gets list of stories from server, generates their HTML, and puts on page. */
 
 function putStoriesOnPage() {
-  console.debug("putStoriesOnPage");
 
   $allStoriesList.empty();
   $allFavoriteStoriesList.hide();
@@ -84,7 +82,6 @@ function putStoriesOnPage() {
 /** Gets list of user favorite stories, generates their HTML, and puts on page.  */
 
 function putFavoriteStoriesOnPage() {
-  console.debug("putFavoriteStoriesOnPage");
 
   $allFavoriteStoriesList.empty();
   $allStoriesList.hide();
@@ -106,7 +103,6 @@ function putFavoriteStoriesOnPage() {
 /** Gets all user's stories, generates their HTML, and puts on page.  */
 
 function putMyStoriesOnPage() {
-  console.debug("putMyStoriesOnPage");
 
   $allMyStoriesList.empty();
   $allStoriesList.hide();
@@ -128,7 +124,6 @@ function putMyStoriesOnPage() {
 /** Handle submit story form submission */
 
 async function submitForm(evt) {
-  console.debug("submitForm", evt);
   evt.preventDefault();
 
   // grab author, title, url
@@ -152,7 +147,6 @@ $submitForm.on("submit", submitForm);
 //** Handle favoriting/unfavoriting stories */
 
 async function toggleStoryFavorite(evt) {
-  console.debug("toggleStoryFavorite", evt.target);
   evt.preventDefault();
 
   const $target = $(evt.target);
@@ -177,7 +171,6 @@ $allMyStoriesList.on("click", ".star", toggleStoryFavorite);
 //** Handle deleting user's stories */
 
 async function deleteUserStory(evt) {
-  console.debug("deleteUserStory");
   evt.preventDefault();
 
   const $target = $(evt.target);
